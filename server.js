@@ -101,3 +101,120 @@ function showEmployees() {
         chooseCategory();
     })
 }
+// ---------- CREATE ---------- //
+
+// Add department
+function addDepartment() {
+    return inquirer.prompt([{
+        type: "input",
+        name: "newDepartment",
+        message: "What is the name of the new department?",
+        validate: valiDepartment => {
+            if (valiDepartment) {
+                return true;
+            } else {
+                return 'Please enter a name for the new department';
+            }
+        }
+    }])
+       .then(answers => {
+            let sql = `INSERT INTO department (department) VALUES (?)`;
+            let newDepartment = [answers.newDepartment];
+            connection.query(sql, newDepartment, function(error, results) {
+                if(error) {
+                    console.log(error);
+                } else {
+                    console.table(results);
+                }
+                chooseCategory();
+            })
+        })
+}
+
+// Add Employee (Person)
+function addEmployee () {
+    return inquirer.prompt([{
+        type: "input",
+        name: "firstName",
+        message: "What is the First Name of the new employee being added?",
+        validate: valiFirstName => {
+            if (valiFirstName) {
+                return true;
+            } else {
+                return 'Please enter the First name for the newly recruited employee.';
+            }
+        },
+        type: "input",
+        name: "lastName",
+        message: "What is the Last Name of the new employee being added?",
+        validate: valiLastName => {
+            if (valiLastName) {
+                return true;
+            } else {
+                return 'Please enter the Last name for the newly recruited employee.';
+            }
+        },
+        type: "input",
+        name: "jobTitleId",
+        message: "What is the Job Title ID of the new employee being added?",
+        validate: valijobTitleId => {
+            if (valijobTitleId) {
+                return true;
+            } else {
+                return 'Please enter a valid Job Title ID of the new employee being added.';
+            }
+        },
+    }])
+      .then(answers => {
+          let sql = `INSERT INTO Person (firstName, lastName, jobTitleId) VALUES (?,?,?);`;
+          let newEmployee = [answers.firstName, answers.lastName, answers.jobTitleId];
+
+          connection.query(sql, newEmployee, function(error, results) {
+              if(error) {
+                  console.log(error);
+              } else {
+                  console.table(results);
+              }
+              chooseCategory();
+          })
+      })
+}
+
+// Add Role (Job_Title)
+function addRole () {
+    return inquirer.prompt([{
+        type: "input",
+        name: "title",
+        message: "What is the title of the position?",
+        validate: valiRole => {
+            if (valiRole) {
+                return true;
+            } else {
+                return 'Please enter a valid Job Description for the Employee.';
+            }
+        },
+        type: "input",
+        name: "salary",
+        message: "What will be the starting salary for the new employee?",
+        validate: valiSalary => {
+            if (valiSalary) {
+                return true;
+            } else {
+                return 'Please enter a valid salary for the employee.';
+            }
+        },
+    }])
+      .then(answers => {
+          let sql = `INSERT INTO Job_Title (title, salary) VALUES (?,?);`;
+          let newRole = [answers.title, answers.salary];
+
+          connection.query(sql, newRole, function(error, results) {
+              if(error) {
+                  console.log(error);
+              } else {
+                  console.table(results);
+              }
+              chooseCategory();
+          })
+      })
+}
