@@ -218,3 +218,71 @@ function addRole () {
           })
       })
 }
+// ---------- UPDATE ---------- //
+
+function updateEmployeeInfo () {
+    return inquirer.prompt([{
+        type: "input",
+        name: "updateFirstName",
+        message: "What is the first name of the updated employee?",
+        validate: valiNewInfoFirstName => {
+            if (valiNewInfoFirstName) {
+                return true;
+            } else {    
+                return 'Enter the First Name of the employee being updated in the database.';
+            }
+        },
+        type: "input",
+        name: "updateLastName",
+        message: "What is the last name of the updated employee?",
+        validate: valiNewInfoLastName => {
+            if (valiNewInfoLastName) {
+                return true;
+            } else {    
+                return 'Enter the Last Name of the employee being updated in the database.';
+            }
+        },
+        type: "input",
+        name: "updateRoleId",
+        message: "What is the role id of the updated employee?",
+        validate: valiNewInfoRoleId => {
+            if (valiNewInfoRoleId) {
+                return true;
+            } else {    
+                return 'Please update the role.Id of the employee recently updated/added.';
+            }
+        },
+        type: "input",
+        name: "updateManagerId",
+        message: "Who is the updated employee working under?",
+        validate: valiNewInfoManagerId => {
+            if (valiNewInfoManagerId) {
+                return true;
+            } else {    
+                return 'Please enter a valid manager for the updated employee.';
+            }
+        },
+    }])
+     .then(answers => {
+        let sql = `UPDATE Person SET updateRoleId =? WHERE updateFirstName =? AND updateLastName =? AND updateRoleId =? AND updateManagerId =?`;
+        let updateEmployee = [
+            answers.updateRoleId,
+            answers.updateFirstName,
+            answers.updateLastName,
+            answers.updateManagerId,
+        ];
+
+        connection.query(sql, updateEmployee, function(error, results) {
+            if(error) {
+                console.log(error);
+            } else {
+                console.table(results);
+            }
+            chooseCategory();
+        })
+    })
+}
+
+
+
+chooseCategory();
