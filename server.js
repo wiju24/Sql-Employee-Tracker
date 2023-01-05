@@ -50,3 +50,54 @@ const chooseCategory =async  () => {
         }
   
 }
+// ---------- READ ---------- //
+
+// VIEW all departments
+function showDepartment() {
+    let sql = `SELECT * FROM 
+    employee_db.department;`;
+    connection.query(sql, function(error, results) {
+        if(error) {
+            console.log(error);
+        }
+        console.table(results);
+        chooseCategory();
+    })
+}
+// VIEW all Job_Titles
+function showRole() {
+    let sql = `SELECT Job_Title.id,
+	Job_Title.title,
+	department.department AS department,
+	Job_Title.salary
+    FROM Job_Title
+	INNER JOIN department ON Job_Title.department_id = department.id;`
+    connection.query(sql, function(error, results) {
+        if(error) {
+            console.log(error);
+        }
+        console.table(results);
+        chooseCategory();
+    })
+}
+// VIEW all Employees (Persons)
+function showEmployees() {
+    let sql = `SELECT Person.id,
+    Person.first_name,
+    Person.last_name,
+    Job_Title.title,
+    department.department AS department,
+    Job_Title.salary,
+	CONCAT(manager.first_name, " ", manager.last_name) AS managerName
+    FROM Person
+    LEFT JOIN Job_Title on Job_Title.id = Person.id
+    LEFT JOIN department ON department.id = Job_Title.department_id
+    LEFT JOIN Person AS manager ON manager.id = Person.manager_id;`
+    connection.query(sql, function(error, results) {
+        if(error) {
+            console.log(error);
+        }
+        console.table(results);
+        chooseCategory();
+    })
+}
