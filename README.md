@@ -66,7 +66,7 @@ npm start
 Make sure you have Insomnia and mySqlworkbench installed on the desktop. The following youtube link will go over how to connect to the database and run the routes.
 
 ```
-https://youtu.be/_anTh3vl8VI
+https://youtu.be/n6B_2aYGBV4
 ```
 
 ## Test
