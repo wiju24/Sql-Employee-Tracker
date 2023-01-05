@@ -143,7 +143,9 @@ function addEmployee () {
             } else {
                 return 'Please enter the First name for the newly recruited employee.';
             }
-        },
+        }
+    },
+    {
         type: "input",
         name: "lastName",
         message: "What is the Last Name of the new employee being added?",
@@ -153,7 +155,9 @@ function addEmployee () {
             } else {
                 return 'Please enter the Last name for the newly recruited employee.';
             }
-        },
+        }
+    },
+    {
         type: "input",
         name: "jobTitleId",
         message: "What is the Job Title ID of the new employee being added?",
@@ -164,10 +168,23 @@ function addEmployee () {
                 return 'Please enter a valid Job Title ID of the new employee being added.';
             }
         },
-    }])
+    },
+    {
+        type: "input",
+        name: "managerId",
+        message: "What is the Manager ID of the new employee that will be working under the manager?",
+        validate: valiManagerId => {
+            if (valiManagerId) {
+                return true;
+            } else {
+                return 'Please enter a valid Manager ID of the new employee being added.';
+            }
+        },
+    }
+    ])
       .then(answers => {
-          let sql = `INSERT INTO Person (firstName, lastName, jobTitleId) VALUES (?,?,?);`;
-          let newEmployee = [answers.firstName, answers.lastName, answers.jobTitleId];
+          let sql = `INSERT INTO Person (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+          let newEmployee = [answers.firstName, answers.lastName, answers.jobTitleId, answers.managerId];
 
           connection.query(sql, newEmployee, function(error, results) {
               if(error) {
@@ -192,7 +209,9 @@ function addRole () {
             } else {
                 return 'Please enter a valid Job Description for the Employee.';
             }
-        },
+        }
+    },
+    {
         type: "input",
         name: "salary",
         message: "What will be the starting salary for the new employee?",
@@ -203,10 +222,22 @@ function addRole () {
                 return 'Please enter a valid salary for the employee.';
             }
         },
+    },
+    {
+        type: "input",
+        name: "departId",
+        message: "What will be the ID of the department that the employee is joining? The number next to each department will be the id to input for the employee to join. 1) Human Resources 2) Information Technology 3) Accounting 4) Sales 5) Management 6) Social Media ",
+        validate: valiDepartID => {
+            if (valiDepartID) {
+                return true;
+            } else {
+                return 'Please enter a department ID for the employee hat is under the department.';
+            }
+        },
     }])
       .then(answers => {
-          let sql = `INSERT INTO Job_Title (title, salary) VALUES (?,?);`;
-          let newRole = [answers.title, answers.salary];
+          let sql = `INSERT INTO Job_Title (title, salary, department_id) VALUES (?,?,?);`;
+          let newRole = [answers.title, answers.salary, answers.departId];
 
           connection.query(sql, newRole, function(error, results) {
               if(error) {
@@ -231,7 +262,9 @@ function updateEmployeeInfo () {
             } else {    
                 return 'Enter the First Name of the employee being updated in the database.';
             }
-        },
+        }
+    },
+    {
         type: "input",
         name: "updateLastName",
         message: "What is the last name of the updated employee?",
@@ -241,7 +274,9 @@ function updateEmployeeInfo () {
             } else {    
                 return 'Enter the Last Name of the employee being updated in the database.';
             }
-        },
+        }
+    },
+    {
         type: "input",
         name: "updateRoleId",
         message: "What is the role id of the updated employee?",
@@ -251,7 +286,9 @@ function updateEmployeeInfo () {
             } else {    
                 return 'Please update the role.Id of the employee recently updated/added.';
             }
-        },
+        }
+    },
+    {
         type: "input",
         name: "updateManagerId",
         message: "Who is the updated employee working under?",
@@ -261,8 +298,9 @@ function updateEmployeeInfo () {
             } else {    
                 return 'Please enter a valid manager for the updated employee.';
             }
-        },
-    }])
+        }
+    },
+    ])
      .then(answers => {
         let sql = `UPDATE Person SET updateRoleId =? WHERE updateFirstName =? AND updateLastName =? AND updateRoleId =? AND updateManagerId =?`;
         let updateEmployee = [
